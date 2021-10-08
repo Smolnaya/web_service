@@ -1,0 +1,9 @@
+<form method="post" action="{% url 'article_open' form.instance.pk %}" class="js-article-open-form">
+  {% csrf_token %}
+  <div class="modal-body">
+    {% include 'articles/includes/partial_article_form.html' %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+  </div>
+</form>
