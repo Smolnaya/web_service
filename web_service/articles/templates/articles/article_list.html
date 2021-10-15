@@ -9,62 +9,68 @@
 {% endblock %}
 
 {% block content %}
-<form method="GET" class="form-inline">
-{#{% csrf_token %}#}
+    <div class="container">
 
-    <div class="page-header">
-{#        <form method="GET" class="form-inline">#}
-{#            {% csrf_token %}#}
+        <div class="row">
 
-            {#        SEARCH       #}
-            <div class="input-field form-group">
-                <label>
-                    <input type="text" class="form-control" name="q" value="{{ request.GET.q }}"
-                           placeholder="Поиск по заголовку">
-                </label>
-                <button class="btn btn-info glyphicon glyphicon-search" type="submit" name="action"></button>
+        {#        SEARCH       #}
+            <div class="col">
+                <form method="GET" class="form-inline">
+                    {% csrf_token %}
+                    <label>
+                        <input type="text" class="form-control" name="q" value="{{ request.GET.q }}"
+                               placeholder="Поиск по заголовку">
+                    </label>
+                    <button class="btn btn-info glyphicon glyphicon-search" type="submit" name="action"></button>
+                </form>
             </div>
+        <hr/>
 
-            {#        SORT      #}
-            <div class="form-check">
-              <input class="form-check-input" type="radio"
-                     name="publication_date" id="flexRadioDefault1">
-              <label class="form-check-label" for="flexRadioDefault1">
-                По дате
-              </label>
+        {#        CREATE       #}
+            <div class="col">
+                <button type="button" class="btn btn-primary js-create-article"
+                        data-url="{% url 'article_create' %}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Новая статья
+                </button>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" value="{{ request.GET.s }}"
-                     name="author" id="flexRadioDefault2" checked>
-              <label class="form-check-label" for="flexRadioDefault2">
-                По автору
-              </label>
-            </div>
+        </div>
+        <hr/>
 
-            {#        FILTER        #}
-            <div class="input-field form-group">
+        {#            SORT      #}
+        <div class="row justify-content-start">
+            <div class="col">
+                <label for="sort-selection">Сортировать по:</label>
+                <select class="form-control" id="sort-selection">
+                    <option>заголовку</option>
+                    <option>автору</option>
+                    <option>дате</option>
+                    <option>источнику</option>
+                </select>
             </div>
+        </div>
+        <hr/>
 
-{#        </form>#}
+        {#            FILTER        #}
+        <div class="row justify-content-start">
+            <div class="col-4">
+
+            </div>
+        </div>
+        <hr/>
+
     </div>
 
-    <p>
-        <button type="button" class="btn btn-primary js-create-article"
-                data-url="{% url 'article_create' %}">
-            <span class="glyphicon glyphicon-plus"></span>
-            Новая статья
-        </button>
-    </p>
-
-    <table class="table" id="article-table">
+    {#          TABLE          #}
+    <table class="table table-striped" id="article-table">
         <thead>
         <tr>
-            <th>#          </th>
-            <th>Заголовок  </th>
-            <th>Автор      </th>
-            <th>Дата       </th>
-            <th>Источник   </th>
-            <th>Теги       </th>
+            <th>#</th>
+            <th>Заголовок</th>
+            <th>Автор</th>
+            <th>Дата</th>
+            <th>Источник</th>
+            <th>Теги</th>
             <th></th>
         </tr>
         </thead>
@@ -73,24 +79,21 @@
         </tbody>
     </table>
 
-</form>
-
-    {#        {% bootstrap_paginate articles range=10 show_prev_next="true" show_first_last="true" %}#}
-
+    {#         PAGINATION         #}
     {% if articles.has_other_pages %}
         <div class="pagination" style="font-size: 16px;">
             {% if articles.has_previous %}
                 <a href="?page=
                         {{ articles.previous_page_number }}
-                {% if request.GET.q%}&q={{ request.GET.q }}{% endif %}
-                {% if request.GET.s%}&s={{ request.GET.s }}{% endif %}
+                {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
+                {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}
                 "><span class="glyphicon glyphicon-chevron-left" style="font-size: 20px;"></span></a>
             {% endif %}
             Страница {{ articles.number }} из {{ articles.paginator.num_pages }}
             {% if articles.has_next %}
                 <a href="?page={{ articles.next_page_number }}
                 {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
-                {% if request.GET.s%}&s={{ request.GET.s }}{% endif %}
+                {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}
                 "><span class="glyphicon glyphicon-chevron-right" style="font-size: 20px;"></span></a>
             {% endif %}
         </div>
