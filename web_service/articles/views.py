@@ -1,3 +1,7 @@
+import json
+from django.http import HttpResponse
+
+from django.core import serializers
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
@@ -6,18 +10,28 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Article
 from .forms import ArticleForm
+from .services.service import articleToDictionary
+
+'''
+1. Create func that gets all articles or filter and return JSON with articles
+2. On page load, request articles with selected filters
+JS: document.addEventListener(DOMContentLoaded, () => {sendRequestWithFilters()});
+Browser global store - 'window'
+3. Function handles request, filters articles and returns JSON
+4. Function responses with articles and client handles response adn redraws UI
+
+Client-side
+1. Global variable that stores filters, sort, articles?
+
+Update article:
+    1. Send request to save article
+    2. Send request to fetch articles with filters
+    3. Receive response, update local store with articles and redraw UI
+'''
 
 
 def article_list(request):
     article_list = Article.objects.all()
-    query = request.GET.get('q')
-    sort_by = request.GET.get('s')
-
-    if query:
-        article_list = Article.objects.filter(Q(title__icontains=query))
-
-    if sort_by:
-        article_list = article_list.order_by(sort_by)
 
     paginator = Paginator(article_list, 6)
     page = request.GET.get('page', 1)
@@ -32,6 +46,87 @@ def article_list(request):
         'articles': posts
     }
     return render(request, "articles/article_list.html", context)
+
+
+def search_articles(request):
+    search = request.GET.get('search')
+    sort = request.GET.get('sort')
+    author = request.GET.get('author')
+    source = request.GET.get('source')
+    dateFrom = request.GET.get('dateFrom')
+    dateTo = request.GET.get('dateTo')
+
+    # print(dateTo) # 2021-10-14
+
+    if search:
+        lst = Article.objects.filter(title__icontains=search)
+    else:
+        lst = Article.objects.all()
+
+    if author:
+        lst = lst.filter(author__contains=author)
+
+    if source:
+        lst = lst.filter(source__contains=source)
+
+    if dateFrom:
+        lst = lst.filter(publication_date__gte=dateFrom)
+
+    if dateTo:
+        lst = lst.filter(publication_date__lte=dateTo)
+
+    lst = lst.order_by(sort)
+
+    data = list()
+    for article in lst:
+        data.append(articleToDictionary(article))
+
+    return JsonResponse(data, safe=False)
+
+
+def get_authors(request):
+    lst = Article.objects \
+        .values_list('author', flat=True) \
+        .order_by('author') \
+        .distinct()
+
+    response = {
+        'authors': list(lst)
+    }
+
+    return JsonResponse(response, safe=False)
+
+
+def get_source(request):
+    lst = Article.objects \
+        .values_list('source', flat=True) \
+        .order_by('source') \
+        .distinct()
+
+    response = {
+        'sources': list(lst)
+    }
+
+    return JsonResponse(response, safe=False)
+
+
+def getArticles():
+    article_list = Article.objects.all()
+    sort = ''
+    search = ''
+    author = ''
+    source = ''
+    dateFrom = ''
+    dateTo = ''
+    if sort:
+        article_list = Article.objects.order_by(sort)
+    if search:
+        article_list = article_list.filter(Q(title__icontains=search))
+    if author:
+        article_list.filter(Q(author__icontains=author))
+    if source:
+        article_list.filter(Q(source__icontains=source))
+    return article_list
 
 
 def save_article_form(request, form, template_name):

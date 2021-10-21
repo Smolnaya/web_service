@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^article/(?P<pk>\d+)/open/$', views.article_open, name='article_open'),
     url(r'^article/(?P<pk>\d+)/update/$', views.article_update, name='article_update'),
     url(r'^article/(?P<pk>\d+)/delete/$', views.article_delete, name='article_delete'),
+    url(r'search_articles', views.search_articles, name='search_articles'),
+    url(r'get_authors', views.get_authors, name='get_authors'),
+    url(r'get_source', views.get_source, name='get_source'),
 ]

@@ -2,32 +2,97 @@
 
 {% load static %}
 
-{% load bootstrap_pagination %}
-
 {% block javascript %}
     <script src="{% static 'articles/js/articles.js' %}"></script>
+    <script src="{% static 'articles/js/onload.js' %}"></script>
+    <script src="{% static 'articles/js/table.js' %}"></script>
+    <script src="{% static 'articles/js/crud.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="container">
 
+        {#            SEARCH        #}
         <div class="row">
-
-            {#        SEARCH       #}
             <div class="col">
-                <form method="GET" class="form-inline">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="q" value="{{ request.GET.q }}"
-                               placeholder="Поиск по заголовку">
-                        <span class="input-group-btn"><button class="btn btn-info glyphicon glyphicon-search"
-                                                              type="submit" name="action"></button></span>
-                    </div>
-                </form>
+                <div class="input-group">
+                    <label for="searchInput"></label>
+                    <input type="text" id="searchInput" onchange="updateLocalStore('search', this.value)"
+                           class="form-control" name="search" placeholder="Поиск по заголовку">
+                    <span class="input-group-btn">
+                <button class="btn btn-info glyphicon glyphicon-search" type="button" onclick="search()"></button>
+                </span>
+                </div>
             </div>
-            <hr/>
+        </div>
 
-            {#        CREATE       #}
+        {#            SORT      #}
+        <div class="row" style="padding-top: 10px">
+            <div class="col">
+                <div class="input-group">
+                    <label for="sort-selection">Сортировать по:</label>
+                    <select class="form-control" id="sort-selection" onchange="updateLocalStore('sort', this.value)">
+                        <option value="title">заголовку</option>
+                        <option value="author">автору</option>
+                        <option value="publication_date">дате</option>
+                        <option value="source">источнику</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <hr/>
+
+        {#            FILTER        #}
+
+        <div class="row">
+            {#      author      #}
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <label for="author-select">Автор:</label>
+                    <select class="form-control" id="author-select"
+                            onchange="updateLocalStore('author', this.value)">
+                        <option value="" selected>Все</option>
+                    </select>
+                </div>
+            </div>
+            {#        source        #}
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="source-select">Источник:</label>
+                    <select class="form-control" id="source-select"
+                            onchange="updateLocalStore('source', this.value)">
+                        <option value="" selected>Все</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 10px">
+            {#            date from        #}
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="dateFrom">С:</label>
+                    <input class="form-control" type="date" id="dateFrom"
+                           onchange="updateLocalStore('dateFrom', this.value)">
+                </div>
+            </div>
+            {#            date to      #}
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="dateTo">По:</label>
+                    <input class="form-control" type="date" id="dateTo"
+                           onchange="updateLocalStore('dateTo', this.value)">
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 10px">
+            <button class="btn btn-info " type="button" onclick="search()">Применить фильтры</button>
+        </div>
+        <hr/>
+
+        {#        CREATE       #}
+        <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-primary js-create-article"
                         data-url="{% url 'article_create' %}">
@@ -37,80 +102,13 @@
             </div>
         </div>
         <hr/>
-
-        {#            SORT      #}
-        <div class="row justify-content-start">
-            <div class="col">
-                <div class="input-group">
-                    <label for="sort-selection">Сортировать по:</label>
-                    <select class="form-control" id="sort-selection">
-                        <option>заголовку</option>
-                        <option>автору</option>
-                        <option>дате</option>
-                        <option>источнику</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <hr/>
-
-        {#            FILTER        #}
-        <div class="row justify-content-start">
-
-            <div class="input-group">
-                <label class="input-group-text" for="author-select">Автор </label>
-                <select class="custom-select" id="author-select">
-                    <option selected>Choose...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label class="input-group-text" for="source-select">Источник </label>
-                <select class="custom-select" id="source-select">
-                    <option selected>Choose...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="form-group">
-                        <div class="input-group date" id="datepicker1">
-                            <input type="text" placeholder="с" class="form-control"/>
-                            <span class="input-group-addon ">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <div class="form-group">
-                        <div class="input-group date" id="datepicker2">
-                            <input type="text" placeholder="по" class="form-control"/>
-                            <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </div>
-    <hr/>
-
 
     {#          TABLE          #}
     <table class="table table-striped" id="article-table">
         <thead>
         <tr>
-            <th>#</th>
+{#            <th>#</th>#}
             <th>Заголовок</th>
             <th>Автор</th>
             <th>Дата</th>
@@ -119,30 +117,10 @@
             <th></th>
         </tr>
         </thead>
-        <tbody>
-        {% include 'articles/includes/partial_article_list.html' %}
+        <tbody id="post_table">
+        {#        {% include 'articles/includes/partial_article_list.html' %}#}
         </tbody>
     </table>
-
-    {#         PAGINATION         #}
-    {% if articles.has_other_pages %}
-        <div class="pagination" style="font-size: 16px;">
-            {% if articles.has_previous %}
-                <a href="?page=
-                        {{ articles.previous_page_number }}
-                {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
-                {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}
-                "><span class="glyphicon glyphicon-chevron-left" style="font-size: 20px;"></span></a>
-            {% endif %}
-            Страница {{ articles.number }} из {{ articles.paginator.num_pages }}
-            {% if articles.has_next %}
-                <a href="?page={{ articles.next_page_number }}
-                {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
-                {% if request.GET.s %}&s={{ request.GET.s }}{% endif %}
-                "><span class="glyphicon glyphicon-chevron-right" style="font-size: 20px;"></span></a>
-            {% endif %}
-        </div>
-    {% endif %}
 
     <div class="modal fade" id="modal-article">
         <div class="modal-dialog">
