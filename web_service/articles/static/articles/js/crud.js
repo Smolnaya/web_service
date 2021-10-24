@@ -44,6 +44,7 @@ $(function () {
                 if (data.form_is_valid) {
                     $("#modal-article").modal("hide");
                     getArticleData();
+                    setLists();
                 } else {
                     $("#modal-article .modal-content").html(data.html_form);
                 }

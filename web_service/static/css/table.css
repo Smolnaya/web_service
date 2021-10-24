@@ -1,6 +1,6 @@
 td,
 th {
-    border: 1px solid rgb(190, 190, 190);
+    border: 1px solid rgb(75, 143, 203);
     padding: 10px;
     text-align: center;
 }
@@ -14,7 +14,7 @@ tr:nth-child(even) {
 }
 
 th[scope="col"] {
-    background-color: #696969;
+    background: rgb(75, 143, 203);
     color: #fff;
 }
 
@@ -29,7 +29,7 @@ caption {
 
 table {
     border-collapse: collapse;
-    border: 2px solid rgb(200, 200, 200);
+    border: 2px solid rgb(75, 143, 203);
     letter-spacing: 1px;
     font-family: sans-serif;
 }

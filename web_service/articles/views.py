@@ -12,23 +12,6 @@ from .models import Article
 from .forms import ArticleForm
 from .services.service import articleToDictionary
 
-'''
-1. Create func that gets all articles or filter and return JSON with articles
-2. On page load, request articles with selected filters
-JS: document.addEventListener(DOMContentLoaded, () => {sendRequestWithFilters()});
-Browser global store - 'window'
-3. Function handles request, filters articles and returns JSON
-4. Function responses with articles and client handles response adn redraws UI
-
-Client-side
-1. Global variable that stores filters, sort, articles?
-
-Update article:
-    1. Send request to save article
-    2. Send request to fetch articles with filters
-    3. Receive response, update local store with articles and redraw UI
-'''
-
 
 def article_list(request):
     article_list = Article.objects.all()
@@ -56,7 +39,6 @@ def search_articles(request):
     dateFrom = request.GET.get('dateFrom')
     dateTo = request.GET.get('dateTo')
 
-    # print(dateTo) # 2021-10-14
 
     if search:
         lst = Article.objects.filter(title__icontains=search)
@@ -79,7 +61,9 @@ def search_articles(request):
 
     data = list()
     for article in lst:
+        # article фильтр по заголовку
         data.append(articleToDictionary(article))
+
 
     return JsonResponse(data, safe=False)
 
