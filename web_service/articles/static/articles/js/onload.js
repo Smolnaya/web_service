@@ -7,6 +7,7 @@ function setLists() {
         url: 'get_authors',
         success: function (response) {
             var select = $('#author-select').empty();
+            select.append("<option value='' selected>Все</option>")
             for (const i in response.authors) {
                 select.append("<option value='" + response.authors[i] + "'>" + response.authors[i] + "</option>")
             }
@@ -20,8 +21,11 @@ function setLists() {
         url: 'get_source',
         success: function (response) {
             var select = $('#source-select').empty();
+            select.append("<option value='' selected>Все</option>")
             for (const i in response.sources) {
-                select.append("<option value='" + response.sources[i] + "'>" + response.sources[i] + "</option>")
+                if (response.sources[i] !== '') {
+                    select.append("<option value='" + response.sources[i] + "'>" + response.sources[i] + "</option>")
+                }
             }
         },
         error: function (response) {

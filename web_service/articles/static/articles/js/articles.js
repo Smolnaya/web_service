@@ -4,7 +4,6 @@ async function search() {
 
 function getArticleData() {
     const local_store = storeToURL();
-
     $.ajax({
         url: 'search_articles?' + local_store,
         success: function (response) {
@@ -31,6 +30,14 @@ function setData() {
 
 function updateLocalStore(key, value) {
     localStorage.setItem(key, value);
+}
+
+function clearFilters() {
+    localStorage.setItem('dateFrom', '');
+    localStorage.setItem('dateTo', '');
+    $('#dateTo').val('');
+    $('#dateFrom').val('');
+    setLists();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -11,6 +11,15 @@ from os.path import join as joinpath
 import datetime
 
 
+def cleanNulls():
+    articleList = Article.objects.all()
+    for article in articleList:
+        if article.source == '':
+            print('null value - ', article.title)
+            article.source = None
+            article.save()
+
+
 def loadFiles(file):
     for path in listdir(file):
         article = Article()
@@ -27,13 +36,23 @@ def loadFiles(file):
         dateT = datetime.date.fromisoformat('-'.join([date[:4], date[5:7], date[8:]]))
         article.publication_date = dateT
         article.text = root.find('text').text[10:-4]
-        article.href = root.find('href').text
-        article.source = root.find('source').text
+        if not root.find('source').text:
+            article.source = ''
+        else:
+            article.source = root.find('source').text
+
         tags = root.find('tags')
-        article.tags = ', '.join(map(lambda elem: elem.text, tags))
+        for t in tags:
+            if t is not None:
+                article.tags = ''
+            else:
+                article.tags = ', '.join(map(lambda elem: elem.text, tags))
+                break
 
         article.save()
 
 
-# files = 'D:\\Asus\\Documents\\files'
-# loadFiles(files)
+if __name__ == "__main__":
+    # cleanNulls()
+    files = '/Users/stacey_smolnaya/PycharmProjects/collectionOfArticles/files'
+    loadFiles(files)

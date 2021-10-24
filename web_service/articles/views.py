@@ -1,7 +1,3 @@
-import json
-from django.http import HttpResponse
-
-from django.core import serializers
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
@@ -14,21 +10,7 @@ from .services.service import articleToDictionary
 
 
 def article_list(request):
-    article_list = Article.objects.all()
-
-    paginator = Paginator(article_list, 6)
-    page = request.GET.get('page', 1)
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-
-    context = {
-        'articles': posts
-    }
-    return render(request, "articles/article_list.html", context)
+    return render(request, "articles/article_list.html")
 
 
 def search_articles(request):

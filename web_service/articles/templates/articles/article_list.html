@@ -61,7 +61,6 @@
                     <label class="input-group-text" for="source-select">Источник:</label>
                     <select class="form-control" id="source-select"
                             onchange="updateLocalStore('source', this.value)">
-                        <option value="" selected>Все</option>
                     </select>
                 </div>
             </div>
@@ -86,14 +85,21 @@
             </div>
         </div>
 
-        <div class="row" style="padding-top: 10px">
-            <button class="btn btn-info " type="button" onclick="search()">Применить фильтры</button>
+        <div class="row align-right" style="padding-top: 10px">
+            <div class="pull-right">
+                <button class="btn btn-info " type="button" onclick="search()">Применить</button>
+                <button class="btn btn-danger " type="button" onclick="clearFilters()">Очистить</button>
+            </div>
         </div>
         <hr/>
 
         {#        CREATE       #}
         <div class="row">
-            <div class="col">
+            <div class="col-xs-6">
+                <div class="paginationjs paginationjs-big paginationjs-theme-blue"
+                     id="pagination-container"></div>
+            </div>
+            <div class="col-xs-6">
                 <button type="button" class="btn btn-primary js-create-article"
                         data-url="{% url 'article_create' %}">
                     <span class="glyphicon glyphicon-plus"></span>
@@ -101,11 +107,9 @@
                 </button>
             </div>
         </div>
-        <hr/>
     </div>
 
-    <div class="paginationjs paginationjs-big paginationjs-theme-blue"
-         id="pagination-container"></div>
+
 
     {#          TABLE          #}
     <table style="margin: 20px 0;" id="article-table">

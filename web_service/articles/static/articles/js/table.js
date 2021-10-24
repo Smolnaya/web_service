@@ -39,13 +39,12 @@ function draw_table(resp) {
             "        <td colspan=\"8\" class=\"text-center bg-warning\">" +
             "Пусто, попробуйте сформулировать запрос по-другому</td>" +
             "    </tr>")
-    }
-
-    $('#pagination-container').pagination({
-        dataSource: resp,
-        callback: function(data) {
-            const html = template(data);
-            post_table.html(html);
-        }
-    })
+    } else
+        $('#pagination-container').pagination({
+            dataSource: resp,
+            callback: function(data) {
+                const html = template(data);
+                post_table.html(html);
+            }
+        })
 }
