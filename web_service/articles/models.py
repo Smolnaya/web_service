@@ -7,9 +7,17 @@ from django.db import models
 class Article(models.Model):
     GAMES = 'Игры'
     OS = 'ОС'
+    TECHNIQUE = 'Техника'
+    SECURITY = 'Безопасность'
+    SOCIAL_NETWORK = 'Социальные сети'
+    CARS = 'Автомобили'
     CATEGORIES = [
         (GAMES, 'Игры'),
-        (OS, 'ОС')
+        (OS, 'ОС'),
+        (TECHNIQUE, 'Техника'),
+        (SECURITY, 'Безопасность'),
+        (SOCIAL_NETWORK, 'Социальные сети'),
+        (CARS, 'Автомобили')
     ]
     title = models.CharField(max_length=100, default='')
     author = models.CharField(max_length=100, default='')
