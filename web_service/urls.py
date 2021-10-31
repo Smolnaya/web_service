@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.urls import path
+from django.contrib import admin
 from django.views.generic import TemplateView
 
 from web_service.articles import views
@@ -13,4 +15,7 @@ urlpatterns = [
     url(r'search_articles', views.search_articles, name='search_articles'),
     url(r'get_authors', views.get_authors, name='get_authors'),
     url(r'get_source', views.get_source, name='get_source'),
+    # url(r'^admin/$', views)
+    path('admin/', admin.site.urls),
+
 ]
