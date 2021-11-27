@@ -5,10 +5,8 @@ function template(data){
             "<tr style=\"padding: 10px\">"
             // + "<td>" + resp[i].id + "</td>"
             + "<td>" + item.title + "</td>"
-            + "<td style='white-space: nowrap;'>" + item.author + "</td>"
             + "<td style='white-space: nowrap;'>" + item.publication_date + "</td>"
-            + "<td>" + item.source + "</td>"
-            + "<td>" + item.tags + "</td>"
+            + "<td>" + item.topic + "</td>"
             + "<td style=\"width: 150px\">" +
             "            <button type=\"button\"" +
             "                    class=\"btn btn-info btn-sm js-open-article\"" +

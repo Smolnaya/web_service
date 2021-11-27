@@ -16,22 +16,17 @@ def article_list(request):
 def search_articles(request):
     search = request.GET.get('search')
     sort = request.GET.get('sort')
-    author = request.GET.get('author')
-    source = request.GET.get('source')
+    topic = request.GET.get('topic')
     dateFrom = request.GET.get('dateFrom')
     dateTo = request.GET.get('dateTo')
-
 
     if search:
         lst = Article.objects.filter(title__icontains=search)
     else:
         lst = Article.objects.all()
 
-    if author:
-        lst = lst.filter(author__contains=author)
-
-    if source:
-        lst = lst.filter(source__contains=source)
+    if topic:
+        lst = lst.filter(topic__contains=topic)
 
     if dateFrom:
         lst = lst.filter(publication_date__gte=dateFrom)
@@ -46,31 +41,17 @@ def search_articles(request):
         # article фильтр по заголовку
         data.append(articleToDictionary(article))
 
-
     return JsonResponse(data, safe=False)
 
 
-def get_authors(request):
+def get_topics(request):
     lst = Article.objects \
-        .values_list('author', flat=True) \
-        .order_by('author') \
+        .values_list('topic', flat=True) \
+        .order_by('topic') \
         .distinct()
 
     response = {
-        'authors': list(lst)
-    }
-
-    return JsonResponse(response, safe=False)
-
-
-def get_source(request):
-    lst = Article.objects \
-        .values_list('source', flat=True) \
-        .order_by('source') \
-        .distinct()
-
-    response = {
-        'sources': list(lst)
+        'topics': list(lst)
     }
 
     return JsonResponse(response, safe=False)
@@ -80,18 +61,15 @@ def getArticles():
     article_list = Article.objects.all()
     sort = ''
     search = ''
-    author = ''
-    source = ''
+    topic = ''
     dateFrom = ''
     dateTo = ''
     if sort:
         article_list = Article.objects.order_by(sort)
     if search:
         article_list = article_list.filter(Q(title__icontains=search))
-    if author:
-        article_list.filter(Q(author__icontains=author))
-    if source:
-        article_list.filter(Q(source__icontains=source))
+    if topic:
+        article_list.filter(Q(topic__icontains=topic))
     return article_list
 
 

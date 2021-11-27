@@ -18,8 +18,7 @@ function getArticleData() {
 function storeToURL() {
     return 'search=' + localStorage.getItem('search') + '&' +
         'sort=' + localStorage.getItem('sort') + '&' +
-        'author=' + localStorage.getItem('author') + '&' +
-        'source=' + localStorage.getItem('source') + '&' +
+        'topic=' + localStorage.getItem('topic') + '&' +
         'dateFrom=' + localStorage.getItem('dateFrom') + '&' +
         'dateTo=' + localStorage.getItem('dateTo');
 }
@@ -43,8 +42,7 @@ function clearFilters() {
 document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem('search', '');
     localStorage.setItem('sort', 'title');
-    localStorage.setItem('author', '');
-    localStorage.setItem('source', '');
+    localStorage.setItem('topic', '');
     localStorage.setItem('dateFrom', '');
     localStorage.setItem('dateTo', '');
     setData();
