@@ -17,6 +17,9 @@
                 <li{% if request.path == '/articles/' %} class="active"{% endif %}>
                     <a href="{% url 'article_list' %}">Статьи</a>
                 </li>
+                <li{% if request.path == '/classificator/' %} class="active"{% endif %}>
+                    <a href="{% url 'classification' %}">Классификатор</a>
+                </li>
             </ul>
         </div>
 

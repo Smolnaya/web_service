@@ -41,7 +41,7 @@ def stemming(data: list):
 
 def load_stops():
     stops = []
-    with open('files/stop-ru.txt') as file:
+    with open('classification_service/stop-ru.txt') as file:
         for word in file.readlines():
             stops.append(word.strip().lower())
     return stops
@@ -59,7 +59,7 @@ def clean_text(data: str):
 
 def predict_topic(text: str):
     text = [clean_text(text)]
-    with open('lr.pkl', 'rb') as training_model:
+    with open('classification_service/lr.pkl', 'rb') as training_model:
         model = pickle.load(training_model)
 
     prediction = model.predict(text)
@@ -74,7 +74,7 @@ def model_training():
     #         file.write(f'{csv_file["topic"][i]}#%{clean_text(csv_file["text"][i])}\n')
 
     # Загрузка данных
-    csv_file = pd.read_csv('files/cleaned_dataset.csv', encoding='UTF-8', sep='#%')
+    csv_file = pd.read_csv('cleaned_dataset.csv', encoding='UTF-8', sep='#%')
 
     # Разделение данных для обучения и тестирования
     x = csv_file['text']

@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from classification_service.classifier import predict_topic
 
 from .models import Article
 from .forms import ArticleForm
@@ -11,6 +11,16 @@ from .services.service import articleToDictionary
 
 def article_list(request):
     return render(request, "articles/article_list.html")
+
+
+def classification(request):
+    return render(request, "articles/cf.html")
+
+
+def predict_category(request):
+    text_json = request.GET.get('data_text')
+    topic = {'topic': predict_topic(text_json)}
+    return JsonResponse(topic, safe=False)
 
 
 def search_articles(request):

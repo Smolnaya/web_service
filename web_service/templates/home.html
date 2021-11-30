@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-  <p class="lead">Добро пожаловать!</p>
+    <p class="lead">Добро пожаловать!</p>
+
+    <img src="{% static 'img/IMG_2457.PNG' %}" class="img-fluid center-block" alt="Responsive image">
+
 {% endblock %}

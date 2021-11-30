@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block javascript %}
+    <script src="{% static 'cf/js/cf_service.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row" style="padding-top: 10px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">Классификатор может определить принадлежность текста к одной из следующих
+                категорий:
+            </div>
+            <div class="panel-body">Бывший СССР, Интернет и СМИ, Культура, Мир, Наука и техника,
+                Путешествия, Россия, Силовые структуры, Среда обитания, Экономика
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <label for="text_area">Введите текст:</label>
+            <textarea class="form-control" id="text_area" rows="10" style="resize: none"></textarea>
+        </div>
+        <button type="submit" onclick="predict_topic()" class="btn btn-primary mb-2">Подтвердить</button>
+        <button type="submit" onclick="clean_area()" class="btn btn-danger mb-2">Очистить</button>
+    </div>
+
+    <div class="row" id="panel_row" style="padding-top: 10px;">
+        {#        <div class="panel panel-primary">#}
+        {#            <div class="panel-heading">Предполагаемая категория:</div>#}
+        {#            <div class="panel-body"></div>#}
+        {#        </div>#}
+    </div>
+{% endblock %}
