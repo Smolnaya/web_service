@@ -59,7 +59,7 @@ def clean_text(data: str):
 
 def predict_topic(text: str):
     text = [clean_text(text)]
-    with open('lr.pkl', 'rb') as training_model:
+    with open('../documentation/lr.pkl', 'rb') as training_model:
         model = pickle.load(training_model)
 
     prediction = model.predict(text)
@@ -116,7 +116,7 @@ def model_training():
     # LR accuracy: 0.864
 
     # Сохранение классификатора в файл
-    with open('lr.pkl', 'wb') as file:
+    with open('../documentation/lr.pkl', 'wb') as file:
         pickle.dump(lr, file)
     print('Классификатор LR сохранен')
 
