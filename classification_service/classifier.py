@@ -2,11 +2,11 @@ import pickle
 import re
 import pandas as pd
 import pymorphy2
+from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import SGDClassifier, LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-from nltk.stem import SnowballStemmer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -59,7 +59,7 @@ def clean_text(data: str):
 
 def predict_topic(text: str):
     text = [clean_text(text)]
-    with open('../documentation/lr.pkl', 'rb') as training_model:
+    with open('lr.pkl', 'rb') as training_model:
         model = pickle.load(training_model)
 
     prediction = model.predict(text)
@@ -116,7 +116,7 @@ def model_training():
     # LR accuracy: 0.864
 
     # Сохранение классификатора в файл
-    with open('../documentation/lr.pkl', 'wb') as file:
+    with open('lr.pkl', 'wb') as file:
         pickle.dump(lr, file)
     print('Классификатор LR сохранен')
 
