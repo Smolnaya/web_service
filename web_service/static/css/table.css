@@ -5,6 +5,11 @@ th {
     text-align: center;
 }
 
+.table>thead>tr>th {
+    vertical-align: bottom;
+    border-bottom: 2px solid rgb(75, 143, 203);
+}
+
 td {
     text-align: center;
 }
