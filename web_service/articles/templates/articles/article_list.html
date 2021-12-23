@@ -26,94 +26,101 @@
             </div>
         </div>
 
-        {#            SORT      #}
-        <div class="row" style="padding-top: 10px; padding-left: 15px">
-            <div class="col">
+        <div class="row" style="padding-top: 10px">
+            {#            SORT      #}
+            <div class="col-xs-6">
                 <div class="input-group">
                     <label for="sort-selection">Сортировать по:</label>
-                    <select class="form-control" id="sort-selection" onchange="updateLocalStore('sort', this.value)">
+                    <select class="form-control" id="sort-selection"
+                            onchange="updateLocalStore('sort', this.value)">
                         <option value="title">заголовку</option>
                         <option value="publication_date">дате</option>
                         <option value="topic">категории</option>
                     </select>
                 </div>
             </div>
-        </div>
-        <hr/>
-
-        {#            FILTER        #}
-        <div class="row" style="padding-left: 15px">
-            <div class="input-group">
-                <label class="input-group-text" for="topic-select">Категория:</label>
-                <select class="form-control" id="topic-select"
-                        onchange="updateLocalStore('topic', this.value)">
-                </select>
+            {#            FILTER        #}
+            <div class="col-xs-6 ">
+                <div class="input-group">
+                    <label class="input-group-text" for="topic-select">Категория:</label>
+                    <select class="form-control" id="topic-select"
+                            onchange="updateLocalStore('topic', this.value)">
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="row" style="padding-top: 10px">
             {#            date from        #}
-            <div class="col-xs-2">
+            <div class="col-xs-6">
                 <div class="input-group">
                     <label class="input-group-text" for="dateFrom">С:</label>
-                    <input class="form-control" type="date" id="dateFrom"
-                           onchange="updateLocalStore('dateFrom', this.value)">
+                    <input class="form-control" min="2021-08-01" max="2021-11-01" type="date" id="dateFrom"
+                           onchange="do_date_from('dateFrom', this.value)">
                 </div>
             </div>
             {#            date to      #}
-            <div class="col-xs-2">
+            <div class="col-xs-6">
                 <div class="input-group">
                     <label class="input-group-text" for="dateTo">По:</label>
-                    <input class="form-control" type="date" id="dateTo"
-                           onchange="updateLocalStore('dateTo', this.value)">
+                    <input class="form-control" min="2021-08-01" max="2021-11-01" type="date" id="dateTo"
+                           onchange="do_date_to('dateTo', this.value)">
                 </div>
             </div>
         </div>
 
-        <div class="row align-left" style="padding-top: 10px; padding-left: 15px">
-            <div class="pull-left">
-                <button class="btn btn-info " type="button" onclick="search()">Применить</button>
-                <button class="btn btn-danger " type="button" onclick="clearFilters()">Очистить</button>
+        <div class="row" style="padding-top: 10px;">
+            {#      CLEAR FILTERS       #}
+            <div class="col-xs-2">
+                <div class="pull-left">
+                    <button class="btn btn-danger " type="button" onclick="clearFilters()">Очистить фильтры</button>
+                </div>
             </div>
-        </div>
-        <hr/>
-
-        {#        CREATE       #}
-        <div class="row">
-            <div class="col-xs-6">
-                <div class="paginationjs paginationjs-big paginationjs-theme-blue"
-                     id="pagination-container"></div>
-            </div>
-            <div class="col-xs-6">
+            {#        CREATE       #}
+            <div class="col-xs-2">
                 <button type="button" class="btn btn-primary js-create-article"
                         data-url="{% url 'article_create' %}">
                     <span class="glyphicon glyphicon-plus"></span>
                     Новая статья
                 </button>
             </div>
-        </div>
-    </div>
-
-    {#          TABLE          #}
-    <table style="margin:20px 0" id="article-table">
-        <thead>
-        <tr style="background: rgba(75,143,203,0.49)">
-            {#            <th>#</th>#}
-            <th>Заголовок</th>
-            <th>Дата</th>
-            <th>Категория</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody id="post_table">
-        </tbody>
-    </table>
-
-    <div class="modal fade" id="modal-article">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
+            <div class="col-xs-2">
+                <input type="text" class="form-control" id="article_quantity" readonly value="">
+            </div>
+            {#        PAGINATION   #}
+            <div class="col-xs-6">
+                <div class="paginationjs paginationjs-big paginationjs-theme-blue"
+                     id="pagination-container"></div>
             </div>
         </div>
+
+        {#          TABLE          #}
+        <div class="row" style="padding-left: 15px">
+            <div class="col">
+                <div class="table-responsive-xs">
+                    <table class="table" style="margin:20px 0" id="article-table">
+                        <thead>
+                        <tr style="background: rgba(75,143,203,0.49)">
+                            {#            <th>#</th>#}
+                            <th>Заголовок</th>
+                            <th>Дата</th>
+                            <th>Категория</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody id="post_table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-article">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

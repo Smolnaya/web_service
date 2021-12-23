@@ -38,6 +38,7 @@ function draw_table(resp) {
             "Пусто, попробуйте сформулировать запрос по-другому</td>" +
             "    </tr>")
     } else
+        $('#article_quantity').val("Статей: " + resp.length)
         $('#pagination-container').pagination({
             dataSource: resp,
             callback: function(data) {

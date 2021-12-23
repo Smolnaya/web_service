@@ -29,14 +29,23 @@ function setData() {
 
 function updateLocalStore(key, value) {
     localStorage.setItem(key, value);
+    search();
 }
 
 function clearFilters() {
+    $('#dateTo').val('');
+    document.getElementById("dateTo").setAttribute("min", '2021-08-01');
+    $('#dateFrom').val('');
+    document.getElementById("dateFrom").setAttribute("max", "2021-11-01");
+    $('#searchInput').val('')
+    document.getElementById('sort-selection').value="title";
     localStorage.setItem('dateFrom', '');
     localStorage.setItem('dateTo', '');
-    $('#dateTo').val('');
-    $('#dateFrom').val('');
+    localStorage.setItem('search', '');
+    localStorage.setItem('topic', '');
+    localStorage.setItem('sort', 'title');
     setLists();
+    search();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -48,3 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setData();
     getArticleData();
 })
+
+function do_date_to(key, value) {
+    document.getElementById("dateFrom").setAttribute("max", value);
+    updateLocalStore(key, value);
+}
+
+function do_date_from(key, value) {
+    document.getElementById("dateTo").setAttribute("min", value);
+    updateLocalStore(key, value);
+}
